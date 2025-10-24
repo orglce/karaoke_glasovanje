@@ -172,6 +172,7 @@
       }
 
       async function getKaraokeInfo() {
+        listContainer.innerHTML = '<div style="text-align:center;color:#6b7280;font-size:1.1rem;padding:24px;">Nalaganje predlogov...</div>';
         const { data, error } = await supabase
           .from("karaoke")
           .select("*")
