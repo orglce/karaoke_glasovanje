@@ -23,6 +23,25 @@
           align-items: stretch;
           padding: 16px;
         }
+        h1 {
+          font-size: 2.3rem;
+        }
+        input {
+          font-size: 1.2rem;
+          padding: 16px 18px;
+        }
+        button {
+          font-size: 1.2rem;
+          padding: 16px 22px;
+        }
+        .list-item {
+          font-size: 1.4rem;
+          padding: 20px 16px;
+        }
+        .list-item-votes {
+          font-size: 1.1rem;
+          padding: 8px 18px;
+        }
       }
 
       h1 {
@@ -176,7 +195,7 @@
         const { data, error } = await supabase
           .from("karaoke")
           .select("*")
-          .order("id", { ascending: true });
+          .order("glasovi", { ascending: false });
 
         if (error) return console.error(error);
 
@@ -192,8 +211,19 @@
         const div = document.createElement("div");
         div.classList.add("list-item");
         div.id = karaoke.id;
+
+        // Format date from created_at
+        let dateStr = "";
+        if (karaoke.created_at) {
+          const d = new Date(karaoke.created_at);
+          dateStr = `${d.getDate().toString().padStart(2, '0')}.${(d.getMonth()+1).toString().padStart(2, '0')}.${d.getFullYear()}`;
+        }
+
         div.innerHTML = `
-          ${karaoke.ime}
+          <div>
+            ${karaoke.ime}
+            <div style="font-size:0.95rem;color:#6b7280;font-weight:400;margin-top:2px;opacity:0.6;">Dodano: ${dateStr}</div>
+          </div>
           <div class="list-item-votes">${karaoke.glasovi}</div>
         `;
         div.addEventListener("click", () => voteForKaraoke(karaoke.id, div));
